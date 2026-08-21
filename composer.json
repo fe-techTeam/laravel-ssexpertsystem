@@ -1,0 +1,73 @@
+{
+  "name": "fe-techteam/laravel-ssexpertsystem",
+  "description": "The modern, strongly-typed Laravel client package for the SSExpertSystem SMS & Template Gateway API with TRAI DLT compliance (Single SMS, Bulk SMS, OTPs, Balance, Templates, Sender IDs).",
+  "keywords": [
+    "fetech",
+    "fe-techteam",
+    "laravel",
+    "ssexpert",
+    "ssexpertsystem",
+    "ssexpert-sms",
+    "ssexpert-laravel",
+    "ssexpertsystem-api",
+    "laravel-ssexpert",
+    "laravel-ssexpertsystem",
+    "sms",
+    "sms-gateway",
+    "sms-api",
+    "bulk-sms",
+    "bulk-sms-laravel",
+    "otp",
+    "otp-sms",
+    "dlt",
+    "dlt-sms",
+    "trai-dlt",
+    "peid",
+    "principal-entity-id",
+    "laravel-package",
+    "laravel10",
+    "laravel11",
+    "laravel12",
+    "laravel13"
+  ],
+  "homepage": "https://github.com/fe-techTeam/laravel-ssexpertsystem",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rahul Jat",
+      "email": "rahuljat@firsteconomy.com"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "guzzlehttp/guzzle": "^7.8",
+    "illuminate/http": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/support": "^10.0|^11.0|^12.0|^13.0"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.6",
+    "phpunit/phpunit": "^10.0|^11.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "FeTech\\SSExpert\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FeTech\\SSExpert\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "FeTech\\SSExpert\\SSExpertServiceProvider"
+      ],
+      "aliases": {
+        "SSExpert": "FeTech\\SSExpert\\Facades\\SSExpert"
+      }
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

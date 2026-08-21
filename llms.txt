@@ -1,0 +1,111 @@
+# laravel-ssexpert (`fe-techteam/laravel-ssexpertsystem`)
+
+> Modern, strongly-typed Laravel client SDK for the SSExpertSystem SMS & Template Gateway API (http://api.ssexpertsystem.com) with Indian TRAI DLT compliance (PEID, Templates, Sender IDs, Single & Bulk SMS, Balance queries).
+
+## Key Information
+- Package Name: `fe-techteam/laravel-ssexpertsystem`
+- Packagist URL: https://packagist.org/packages/fe-techteam/laravel-ssexpertsystem
+- GitHub URL: https://github.com/fe-techTeam/laravel-ssexpertsystem
+- Author: Rahul Jat (https://github.com/fe-techTeam)
+- PHP Compatibility: PHP >= 8.2
+- Laravel Compatibility: Laravel 10.x, 11.x, 12.x, 13.x
+
+## Installation
+```bash
+composer require fe-techteam/laravel-ssexpertsystem
+php artisan vendor:publish --tag=ssexpert-config
+```
+
+## Environment Configuration (.env)
+```env
+SSEXPERT_BASE_URL=http://api.ssexpertsystem.com
+SSEXPERT_API_KEY=your_api_key
+SSEXPERT_CLIENT_ID=your_client_id
+SSEXPERT_PEID=your_dlt_principal_entity_id
+SSEXPERT_SENDER_ID=YOUR_SENDER_ID
+```
+
+## Primary API Entrypoint
+The package uses a single unified facade: `FeTech\SSExpert\Facades\SSExpert`.
+
+### 1. Send OTP SMS
+```php
+use FeTech\SSExpert\Facades\SSExpert;
+
+$response = SSExpert::sendOtp('9876543210', '123456', '1107160000000000001');
+if ($response->isSuccess()) {
+    $messageId = $response->getMessageId();
+}
+```
+
+### 2. Send Custom Transactional SMS
+```php
+use FeTech\SSExpert\Facades\SSExpert;
+use FeTech\SSExpert\DTOs\SmsData;
+
+$sms = new SmsData(
+    mobileNumbers: '9876543210',
+    message: 'Your service request ID 12345 is confirmed.',
+    templateId: '1107160000000000002',
+    principleEntityId: '1101554433000000000', // Optional override
+    senderId: 'TESTID'                       // Optional override
+);
+
+$response = SSExpert::sms()->send($sms);
+```
+
+### 3. Send Bulk SMS Campaigns
+```php
+use FeTech\SSExpert\Facades\SSExpert;
+
+// A. Pure Array (No DTOs)
+$response = SSExpert::sendBulk([
+    '9876543210' => 'Hello User 1, your OTP is 112233.',
+    '9123456780' => 'Hello User 2, your OTP is 445566.',
+], templateId: '1107160000000000001');
+
+// B. Or with Strongly Typed DTO
+use FeTech\SSExpert\DTOs\BulkSmsData;
+use FeTech\SSExpert\DTOs\BulkMessageItem;
+
+$bulk = new BulkSmsData(
+    messages: [
+        new BulkMessageItem('9876543210', 'Hello User 1, your OTP is 112233.'),
+        new BulkMessageItem('9123456780', 'Hello User 2, your OTP is 445566.'),
+    ],
+    templateId: '1107160000000000001'
+);
+
+$response = SSExpert::sms()->sendBulk($bulk);
+```
+
+### 4. Check Balance & Credits
+```php
+use FeTech\SSExpert\Facades\SSExpert;
+
+$credits = SSExpert::getCredits(); // float (e.g. 17935.0)
+$balance = SSExpert::balance()->get();
+```
+
+### 5. DLT Template Management
+```php
+use FeTech\SSExpert\Facades\SSExpert;
+use FeTech\SSExpert\DTOs\TemplateData;
+
+$templates = SSExpert::template()->list();
+$template = SSExpert::template()->findByDltTemplateId('1107160000000000001');
+$response = SSExpert::template()->create(new TemplateData('OTP_NAME', 'Your OTP is {#var#}.', '1107160000000000001'));
+```
+
+### 6. Sender ID & Contact Groups
+```php
+use FeTech\SSExpert\Facades\SSExpert;
+
+$headers = SSExpert::senderId()->list();
+$groups  = SSExpert::group()->list();
+```
+
+### 7. Artisan CLI
+```bash
+php artisan ssexpert:balance
+```

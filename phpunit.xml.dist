@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true">
+    <testsuites>
+        <testsuite name="SSExpert Test Suite">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="SSEXPERT_BASE_URL" value="http://api.ssexpertsystem.com"/>
+        <env name="SSEXPERT_API_KEY" value="test-api-key"/>
+        <env name="SSEXPERT_CLIENT_ID" value="test-client-id"/>
+    </php>
+</phpunit>
